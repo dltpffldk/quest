@@ -39,8 +39,8 @@ for i in range(50,53):
     print("\n")
 
 ```
-> 원문 : former finance minister yashwant sinha tuesday demanded probe alleged diversion loans worth crore dewan housing finance agencies including regulators government failed track nefarious deals said comes media report tuesday accused dhfl controlling shareholders diverting funds shell companies buy assets
-> 실제 요약 :  yashwant sinha demands probe into alleged fund diversion by dhfl
+> 원문 : former finance minister yashwant sinha tuesday demanded probe alleged diversion loans worth crore dewan housing finance agencies including regulators government failed track nefarious deals said comes media report tuesday accused dhfl controlling shareholders diverting funds shell companies buy assets   
+> 실제 요약 :  yashwant sinha demands probe into alleged fund diversion by dhfl   
 > 예측 요약 :
 > - 원문의 문장을 하나로 인식해서 summa의 출력이 나오지 않는 것 같습니다. 전처리 되지 않은 텍스트를 사용하거나
 >  print(summarize(_text, words=20))와 같은 형태로 변경하면 될 것 같습니다.
