@@ -5,11 +5,11 @@
 
 # PRT(PeerReviewTemplate)
 각 항목을 스스로 확인하고 체크하고 확인하여 작성한 코드에 적용하세요.
-- [ ] 1.코드가 정상적으로 동작하고 주어진 문제를 해결했나요?
-- [ ] 2.주석을 보고 작성자의 코드가 이해되었나요?
-- [ ] 3.코드가 에러를 유발한 가능성이 있나요?
-- [ ] 4.코드 작성자가 코드를 제대로 이해하고 작성했나요?
-- [ ] 5.코드가 간결한가요?
+- [x] 1.코드가 정상적으로 동작하고 주어진 문제를 해결했나요?
+- [x] 2.주석을 보고 작성자의 코드가 이해되었나요?
+- [x] 3.코드가 에러를 유발한 가능성이 있나요?
+- [x] 4.코드 작성자가 코드를 제대로 이해하고 작성했나요?
+- [x] 5.코드가 간결한가요?
 
 
 # basis for evaluation
@@ -138,17 +138,70 @@ temp_file = os.getenv('HOME')+'/aiffel/Going_Deeper_NLP/GD_NLP_1/sp_tokenizer/da
 
 ```
 
-# 예시
-1. 코드의 작동 방식을 주석으로 기록합니다.
-2. 코드의 작동 방식에 대한 개선 방법을 주석으로 기록합니다.
-3. 참고한 링크 및 ChatGPT 프롬프트 명령어가 있다면 주석으로 남겨주세요.
+## 4th did the writer understand the code?
+
+I already mentioned it.
+But she understood how to change the model to bpe from unigram
+
 ```
+# 디폴트 --model_type = 'unigram'
+spm.SentencePieceTrainer.Train(
+    '--input={} --model_prefix=naver_review_spm --vocab_size={}'.format(temp_file, vocab_size)    
+)
+
+# --model_type = 'bpe'
+spm.SentencePieceTrainer.Train(
+    '--input={} --model_type=bpe --model_prefix=naver_review_spm_bpe --vocab_size={}'.format(temp_file, vocab_size)    
+)
 ```
 
+## 5th is the code simplified?
+
+She defined a function to make the code easy to reuse, and she used the function again to simplify the code as well.
+
+```
+# BPE 타입
+def sp_tokenize_bpe(s_bpe, corpus):
+
+    tensor = []
+
+    for sen in corpus:
+        tensor.append(s_bpe.EncodeAsIds(sen))
+
+    with open("./naver_review_spm_bpe.vocab", 'r') as f: # bpe 타입 vocab
+        vocab = f.readlines()
+
+    word_index = {}
+    index_word = {}
+
+    for idx, line in enumerate(vocab):
+        word = line.split("\t")[0]
+
+        word_index.update({idx:word})
+        index_word.update({word:idx})
+
+    tensor = tf.keras.preprocessing.sequence.pad_sequences(tensor, padding='pre', maxlen = 100)
+
+    return tensor, word_index, index_word
+```
+
+```py
+#sp_tokenize(s, corpus) 사용예제로 확인해
+my_corpus = ['나는 밥을 먹었습니다.', '그러나 여전히 ㅠㅠ 배가 고픕니다...']
+tensor_bpe, word_index_bpe, index_word_bpe = sp_tokenize_bpe(s_bpe, my_corpus)
+print(tensor_bpe)
+
+tensor_bpe, word_index_bpe, index_word_bpe = sp_tokenize_bpe(s_bpe, data)
+print(tensor_bpe.shape)
+```
+
+So, I said 'YES'
+
 # 참고 링크 및 코드 개선 여부
+When you filtered the data based on length, you used list comprehence.
+But you can utilize the Pandas' function.
+I will attach the code.
+
 ```python
-#
-#
-#
-#
+train_data = train_data[train_data['document'].str.len().between(2, 100)]
 ```
