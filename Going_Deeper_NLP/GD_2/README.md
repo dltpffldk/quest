@@ -22,13 +22,18 @@
 # 참고 링크 및 코드 개선 여부
 
 # 보팅
+
 print("[보팅]")
+
 voting_classifier = VotingClassifier(estimators=[
-        ('lr', LogisticRegression(C=10000, penalty='l2')),
-        ('cb', ComplementNB()),
-        ('grbt', GradientBoostingClassifier(random_state=0))
+('lr', LogisticRegression(C=10000, penalty='l2')),
+('cb', ComplementNB()),
+('grbt', GradientBoostingClassifier(random_state=0))
 ], voting='soft', n_jobs=-1)
+
+
 voting_classifier.fit(tfidfv, y_train)
+
 
 predicted = voting_classifier.predict(tfidfv_test) #테스트 데이터에 대한 예측
 print("정확도:", accuracy_score(y_test, predicted)) #예측값과 실제값 비교
@@ -37,3 +42,4 @@ print("[보팅의 Classification Report]")
 print(classification_report(y_test, voting_classifier.predict(tfidfv_test)))
 
 ▶ 보팅 정확도: 0.808993766696349
+▶ 모델 정확도가 가장 높게 작성되어 있어 좋았습니다. 
