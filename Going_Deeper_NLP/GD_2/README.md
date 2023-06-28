@@ -3,6 +3,7 @@
 - 리뷰어 : 김용석
 
 
+
 # PRT(PeerReviewTemplate)
 각 항목을 스스로 확인하고 체크하고 확인하여 작성한 코드에 적용하세요.
 - [O] 1.코드가 정상적으로 동작하고 주어진 문제를 해결했나요?
@@ -17,4 +18,22 @@
   : 매우 간결하고 이해하기 쉽게 작성되었습니다.
 
 
+
 # 참고 링크 및 코드 개선 여부
+
+# 보팅
+print("[보팅]")
+voting_classifier = VotingClassifier(estimators=[
+        ('lr', LogisticRegression(C=10000, penalty='l2')),
+        ('cb', ComplementNB()),
+        ('grbt', GradientBoostingClassifier(random_state=0))
+], voting='soft', n_jobs=-1)
+voting_classifier.fit(tfidfv, y_train)
+
+predicted = voting_classifier.predict(tfidfv_test) #테스트 데이터에 대한 예측
+print("정확도:", accuracy_score(y_test, predicted)) #예측값과 실제값 비교
+print("\n")
+print("[보팅의 Classification Report]")
+print(classification_report(y_test, voting_classifier.predict(tfidfv_test)))
+
+▶ 보팅 정확도: 0.808993766696349
